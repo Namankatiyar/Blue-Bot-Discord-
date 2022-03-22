@@ -11,6 +11,17 @@ const client = new Discord.Client({
     ]
 })
 
+let bot = {
+    client,
+    prefix: ",",
+    owners: ["821019478061613086"]
+}
+
+client.commands = new Discord.Collection()
+client.events = new Discord.Collection()
+
+module.exports = bot
+
 client.on("ready", () =>{
     console.log(`Loggend in as ${client.user.tag}`)
 })
