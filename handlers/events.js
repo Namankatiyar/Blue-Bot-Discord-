@@ -3,7 +3,7 @@ const {getFiles} = require("../util/function")
 module.exports = (bot, reload) =>{
     const {client} = bot
 
-    let events = getFiles("../event/",".js")
+    let events = getFiles("../events/",".js")
 
     if (events.length == 0){
         console.log("No events to load")
@@ -11,7 +11,7 @@ module.exports = (bot, reload) =>{
 
     events.forEach((f, i) => {
         if (reload)
-            delete require.cache[require.resolve('../event/${f}')]
+            delete require.cache[require.resolve('../events/${f}')]
         const events = require('../events/${f}')
         client.events.set(events.name, event)
 
@@ -39,5 +39,14 @@ function triggerEventHandler(bot,event, ...args){
 }
 
 function initEvents(bot){
+    const {client} = bot
+
+    client.on("ready" , () => {
+        triggerEventHandler(bot, "ready")
+    })
+
+    client.on("messageCreate", (message) => {
+        triggerEventHandler(bot, "messageCreate", message)
+    })
 
 }
